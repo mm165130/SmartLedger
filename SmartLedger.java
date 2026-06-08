@@ -1,18 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- */
-
-package com.mycompany.smartledger;
-
-/**
- *
- * @author 劉芊鈺
- */
 import java.util.*;
 
 public class SmartLedger {
 
-    // ===== Item 類別 =====
+    // ===== Item Class =====
     static class Item {
         private String date;
         private String type;
@@ -40,11 +30,11 @@ public class SmartLedger {
 
         @Override
         public String toString() {
-            return date + " " + type + " " + amount + " " + note;
+            return date + " [" + type + "] $" + amount + " - " + note;
         }
     }
 
-    // ===== Ledger 類別 =====
+    // ===== Ledger Class =====
     static class Ledger {
         private ArrayList<Item> items = new ArrayList<>();
 
@@ -54,11 +44,11 @@ public class SmartLedger {
 
         public void showAll() {
             if (items.size() == 0) {
-                System.out.println("沒有資料");
+                System.out.println("No records found.");
                 return;
             }
 
-            System.out.println("==== 所有紀錄 ====");
+            System.out.println("==== All Records ====");
             for (int i = 0; i < items.size(); i++) {
                 System.out.println((i + 1) + ". " + items.get(i));
             }
@@ -69,85 +59,85 @@ public class SmartLedger {
             int expense = 0;
 
             for (Item item : items) {
-                if (item.getType().equals("收入")) {
+                if (item.getType().equalsIgnoreCase("Income")) {
                     income += item.getAmount();
                 } else {
                     expense += item.getAmount();
                 }
             }
 
-            System.out.println("==== 統計結果 ====");
-            System.out.println("總收入：" + income);
-            System.out.println("總支出：" + expense);
-            System.out.println("結餘：" + (income - expense));
+            System.out.println("==== Statistics ====");
+            System.out.println("Total Income  : " + income);
+            System.out.println("Total Expense : " + expense);
+            System.out.println("Balance       : " + (income - expense));
         }
 
         public void sortByAmount() {
             Collections.sort(items, new Comparator<Item>() {
                 public int compare(Item a, Item b) {
-                    return b.getAmount() - a.getAmount();
+                    return Integer.compare(b.getAmount(), a.getAmount());
                 }
             });
 
-            System.out.println("==== 金額排序（高→低）====");
+            System.out.println("==== Sorted by Amount (High -> Low) ====");
             for (int i = 0; i < items.size(); i++) {
                 System.out.println((i + 1) + ". " + items.get(i));
             }
         }
 
         public void search(String keyword) {
-            System.out.println("==== 搜尋結果 ====");
+            System.out.println("==== Search Results ====");
             int count = 0;
 
             for (Item item : items) {
-                if (item.getNote().contains(keyword)) {
+                if (item.getNote().toLowerCase().contains(keyword.toLowerCase())) {
                     System.out.println((++count) + ". " + item);
                 }
             }
 
             if (count == 0) {
-                System.out.println("找不到相關資料");
+                System.out.println("No matching records found.");
             }
         }
     }
 
-    // ===== 主程式 =====
+    // ===== Main Program =====
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         Ledger ledger = new Ledger();
 
         while (true) {
             System.out.println("============================");
-            System.out.println("   SmartLedger 記帳系統");
+            System.out.println("    SmartLedger System");
             System.out.println("============================");
-            System.out.println("1. 新增記帳紀錄");
-            System.out.println("2. 查看所有紀錄");
-            System.out.println("3. 收入/支出統計");
-            System.out.println("4. 金額排序（高→低）");
-            System.out.println("5. 搜尋紀錄（關鍵字）");
-            System.out.println("0. 離開");
+            System.out.println("1. Add a new record");
+            System.out.println("2. View all records");
+            System.out.println("3. Income/Expense statistics");
+            System.out.println("4. Sort by amount (High -> Low)");
+            System.out.println("5. Search records by keyword");
+            System.out.println("0. Exit");
             System.out.println("============================");
-            System.out.print("請輸入選項：");
+            System.out.print("Please enter your choice: ");
 
             int choice = sc.nextInt();
-            sc.nextLine();
+            sc.nextLine(); // Clear the buffer
 
             if (choice == 1) {
-                System.out.print("請輸入日期（YYYY/MM/DD）：");
+                System.out.print("Enter date (YYYY/MM/DD): ");
                 String date = sc.nextLine();
 
-                System.out.print("請輸入類型（收入/支出）：");
+                System.out.print("Enter type (Income/Expense): ");
                 String type = sc.nextLine();
 
-                System.out.print("請輸入金額：");
+                System.out.print("Enter amount: ");
                 int amount = sc.nextInt();
-                sc.nextLine();
+                sc.nextLine(); // Clear the buffer
 
-                System.out.print("請輸入備註：");
+                System.out.print("Enter note: ");
                 String note = sc.nextLine();
 
                 ledger.addItem(new Item(date, type, amount, note));
-                System.out.println("新增成功！");
+                System.out.println("Successfully added!");
 
             } else if (choice == 2) {
                 ledger.showAll();
@@ -159,16 +149,16 @@ public class SmartLedger {
                 ledger.sortByAmount();
 
             } else if (choice == 5) {
-                System.out.print("請輸入關鍵字：");
+                System.out.print("Enter keyword: ");
                 String keyword = sc.nextLine();
                 ledger.search(keyword);
 
             } else if (choice == 0) {
-                System.out.println("感謝使用 SmartLedger！");
+                System.out.println("Thank you for using SmartLedger! Goodbye!");
                 break;
 
             } else {
-                System.out.println("無效選項！");
+                System.out.println("Invalid choice! Please try again.");
             }
 
             System.out.println();
