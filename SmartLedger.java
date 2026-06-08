@@ -1,7 +1,18 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ */
+
+package com.mycompany.smartledger;
+
+/**
+ *
+ * @author 劉芊鈺
+ */
 import java.util.*;
 
 public class SmartLedger {
 
+    // ===== Item 類別 =====
     static class Item {
         private String date;
         private String type;
@@ -33,6 +44,7 @@ public class SmartLedger {
         }
     }
 
+    // ===== Ledger 類別 =====
     static class Ledger {
         private ArrayList<Item> items = new ArrayList<>();
 
@@ -99,6 +111,7 @@ public class SmartLedger {
         }
     }
 
+    // ===== 主程式 =====
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         Ledger ledger = new Ledger();
